@@ -96,7 +96,7 @@ contract Adjudicator is Owned {
         uint8[] v,
         bytes32[] r,
         bytes32[] s
-    ) external onlyOwner returns (bool) {
+    ) external onlyOwner returns (uint) {
         if (newNonce > nonce || (newNonce == nonce && requiredSignators == 0)) {
             bytes32 hash = sha3(data, newNonce, address(owner));
 
@@ -104,6 +104,7 @@ contract Adjudicator is Owned {
             for (uint i = 0; i < addresses.length; i++) {
                 if (addresses[i] == ecrecover(hash, v[i], r[i], s[i])) {
                     signatures++;
+
                 }
 
                 if (signatures >= requiredSignators) {
@@ -111,13 +112,13 @@ contract Adjudicator is Owned {
                     lastTimestamp = now;
                     state = data;
                     CloseEvent(state, nonce);
-                    return true;
+                    return 42;
                 }
             }
 
-            return false;
+            return signatures;
         } else {
-            return false;
+            return 69;
         }
     }
 

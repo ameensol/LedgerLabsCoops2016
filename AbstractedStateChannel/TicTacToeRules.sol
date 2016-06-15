@@ -65,7 +65,7 @@ contract TicTacToeRules is Rules {
         uint8 vO,
         bytes32 rO,
         bytes32 sO
-    ) external returns (bool) {
+    ) external returns (uint) {
         uint8[] memory v = new uint8[](2);
         bytes32[] memory r = new bytes32[](2);
         bytes32[] memory s = new bytes32[](2);
@@ -77,12 +77,7 @@ contract TicTacToeRules is Rules {
         s[0] = sX;
         s[1] = sO;
 
-        if (adjudicator.close(2, state, nonce, v, r, s)) {
-            StateSent(state);
-            return true;
-        } else {
-            return false;
-        }
+        return adjudicator.close(2, state, nonce, v, r, s);
     }
 
     /**
